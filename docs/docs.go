@@ -26,7 +26,7 @@ var doc = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/users": {
-            "post": {
+            "get": {
                 "consumes": [
                     "application/json"
                 ],
@@ -34,7 +34,42 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "UserManagement"
+                    "Users"
+                ],
+                "summary": "Gets all users",
+                "responses": {
+                    "200": {
+                        "description": "Returns UserDTO array",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/application.UserDTO"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Returns err.Error",
+                        "schema": {
+                            "$ref": "#/definitions/err.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Returns err.Error",
+                        "schema": {
+                            "$ref": "#/definitions/err.Error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
                 ],
                 "summary": "Creates new user",
                 "parameters": [
@@ -46,6 +81,134 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/application.CreateUserRequest"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns UserDTO",
+                        "schema": {
+                            "$ref": "#/definitions/application.UserDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Returns err.Error",
+                        "schema": {
+                            "$ref": "#/definitions/err.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Returns err.Error",
+                        "schema": {
+                            "$ref": "#/definitions/err.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Gets user by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns UserDTO",
+                        "schema": {
+                            "$ref": "#/definitions/application.UserDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Returns err.Error",
+                        "schema": {
+                            "$ref": "#/definitions/err.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Returns err.Error",
+                        "schema": {
+                            "$ref": "#/definitions/err.Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Deletes user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Returns err.Error",
+                        "schema": {
+                            "$ref": "#/definitions/err.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Returns err.Error",
+                        "schema": {
+                            "$ref": "#/definitions/err.Error"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Updates new user",
+                "parameters": [
+                    {
+                        "description": "UpdateUser body",
+                        "name": "application.UpdateUserRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/application.UpdateUserRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -86,6 +249,20 @@ var doc = `{
                 }
             }
         },
+        "application.UpdateUserRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
         "application.UserDTO": {
             "type": "object",
             "properties": {
@@ -103,7 +280,7 @@ var doc = `{
         "err.Error": {
             "type": "object",
             "properties": {
-                "message": {
+                "error": {
                     "type": "string"
                 },
                 "validations": {

@@ -21,6 +21,11 @@ func ThrowBadRequestError(e error) *Error {
 	return New(e, http.StatusBadRequest)
 }
 
+// ThrowForbiddenError throws Error with code http.StatusForbidden
+func ThrowForbiddenError(e error) *Error {
+	return New(e, http.StatusForbidden)
+}
+
 // ThrowBadRequestErrorWithMessage throws Error with message and code http.StatusBadRequest
 func ThrowBadRequestErrorWithMessage(message string) *Error {
 	return New(errors.New(message), http.StatusBadRequest)
@@ -35,7 +40,7 @@ func ThrowInternalServerError(e error) *Error {
 	return New(e, http.StatusInternalServerError)
 }
 
-// ThrowNotFoundError throws Error with http.StatusNotFound and message with given prefix
-func ThrowNotFoundError(prefix string) *Error {
-	return New(errors.New(prefix), http.StatusNotFound)
+// ThrowNotFoundError throws Error with http.StatusNotFound
+func ThrowNotFoundError(e error) *Error {
+	return New(e, http.StatusNotFound)
 }

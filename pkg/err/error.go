@@ -4,7 +4,7 @@ package err
 // Validations are slice of ValidationError.
 // Code is http code
 type Error struct {
-	Message     string            `json:"message"`
+	Err         string            `json:"error"`
 	Code        int               `json:"-"`
 	Validations []ValidationError `json:"validations,omitempty"`
 }
@@ -17,7 +17,7 @@ func New(err error, code int) *Error {
 	}
 
 	if err != nil {
-		e.Message = err.Error()
+		e.Err = err.Error()
 	}
 
 	return e
@@ -25,7 +25,7 @@ func New(err error, code int) *Error {
 
 // Error returns error message
 func (e *Error) Error() string {
-	return e.Message
+	return e.Err
 }
 
 // AddValidationErr adds validation error to validations field

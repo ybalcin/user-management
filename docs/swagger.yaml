@@ -8,6 +8,15 @@ definitions:
       password:
         type: string
     type: object
+  application.UpdateUserRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
   application.UserDTO:
     properties:
       email:
@@ -19,7 +28,7 @@ definitions:
     type: object
   err.Error:
     properties:
-      message:
+      error:
         type: string
       validations:
         items:
@@ -40,7 +49,30 @@ info:
   version: "1.0"
 paths:
   /users:
-    post:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns UserDTO array
+          schema:
+            items:
+              $ref: '#/definitions/application.UserDTO'
+            type: array
+        "400":
+          description: Returns err.Error
+          schema:
+            $ref: '#/definitions/err.Error'
+        "500":
+          description: Returns err.Error
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: Gets all users
+      tags:
+      - Users
+    put:
       consumes:
       - application/json
       parameters:
@@ -67,5 +99,89 @@ paths:
             $ref: '#/definitions/err.Error'
       summary: Creates new user
       tags:
-      - UserManagement
+      - Users
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: Returns err.Error
+          schema:
+            $ref: '#/definitions/err.Error'
+        "500":
+          description: Returns err.Error
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: Deletes user
+      tags:
+      - Users
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns UserDTO
+          schema:
+            $ref: '#/definitions/application.UserDTO'
+        "400":
+          description: Returns err.Error
+          schema:
+            $ref: '#/definitions/err.Error'
+        "500":
+          description: Returns err.Error
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: Gets user by id
+      tags:
+      - Users
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: UpdateUser body
+        in: body
+        name: application.UpdateUserRequest
+        required: true
+        schema:
+          $ref: '#/definitions/application.UpdateUserRequest'
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns UserDTO
+          schema:
+            $ref: '#/definitions/application.UserDTO'
+        "400":
+          description: Returns err.Error
+          schema:
+            $ref: '#/definitions/err.Error'
+        "500":
+          description: Returns err.Error
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: Updates new user
+      tags:
+      - Users
 swagger: "2.0"

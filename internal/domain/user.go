@@ -4,6 +4,7 @@ import (
 	"github.com/ybalcin/user-management/internal/shared/helper"
 	"github.com/ybalcin/user-management/pkg/err"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"time"
 )
 
 type User struct {
@@ -11,26 +12,25 @@ type User struct {
 	Name         string             `bson:"name"`
 	Email        string             `bson:"email"`
 	PasswordHash string             `bson:"passwordHash"`
-	password     string             `bson:"-"`
+	Password     string             `bson:"-"`
+	CreatedAt    time.Time          `bson:"createdAt"`
+	UpdatedAt    time.Time          `bson:"updatedAt"`
+	IsDeleted    bool               `bson:"isDeleted"`
 }
 
 func NewUser(name, email, password string) (*User, *err.Error) {
 	u := &User{
-		Id:       primitive.NewObjectID(),
-		Name:     name,
-		Email:    email,
-		password: password,
+		Id:        primitive.NewObjectID(),
+		Name:      name,
+		Email:     email,
+		Password:  password,
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
 	}
 
 	if errs := u.validate(); len(errs) > 0 {
 		return nil, err.ThrowValidationError(errs...)
 	}
-
-	passwordHash, e := helper.HashPassword(u.password)
-	if e != nil {
-		return nil, e
-	}
-	u.PasswordHash = passwordHash
 
 	return u, nil
 }
@@ -50,7 +50,7 @@ func (u *User) validate() []err.ValidationError {
 		}
 	}
 
-	if helper.StrLength(u.password) <= 0 {
+	if helper.StrLength(u.Password) <= 0 {
 		errs = append(errs, UserPasswordCannotBeEmptyError)
 	}
 
@@ -59,4 +59,9 @@ func (u *User) validate() []err.ValidationError {
 	}
 
 	return errs
+}
+
+func (u *User) Delete() {
+	u.IsDeleted = true
+	u.UpdatedAt = time.Now().UTC()
 }
