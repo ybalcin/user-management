@@ -1,0 +1,71 @@
+definitions:
+  application.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  application.UserDTO:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  err.Error:
+    properties:
+      message:
+        type: string
+      validations:
+        items:
+          $ref: '#/definitions/err.ValidationError'
+        type: array
+    type: object
+  err.ValidationError:
+    properties:
+      key:
+        type: string
+      message:
+        type: string
+    type: object
+info:
+  contact:
+    name: Yigitcan Balcin
+  title: User Management API
+  version: "1.0"
+paths:
+  /users:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: CreateNewUser body
+        in: body
+        name: application.CreateUserRequest
+        required: true
+        schema:
+          $ref: '#/definitions/application.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns UserDTO
+          schema:
+            $ref: '#/definitions/application.UserDTO'
+        "400":
+          description: Returns err.Error
+          schema:
+            $ref: '#/definitions/err.Error'
+        "500":
+          description: Returns err.Error
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: Creates new user
+      tags:
+      - UserManagement
+swagger: "2.0"

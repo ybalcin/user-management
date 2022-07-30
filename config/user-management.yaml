@@ -1,0 +1,3 @@
+DatabaseSettings:
+  DatabaseURI: mongodb+srv://admin:BfZKSMlwWrZUSPsU@cluster0.l1pmb.mongodb.net/user-management?retryWrites=true&w=majority
+  DatabaseName: user-management

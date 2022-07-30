@@ -1,0 +1,112 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "User Management API",
+        "contact": {
+            "name": "Yigitcan Balcin"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "UserManagement"
+                ],
+                "summary": "Creates new user",
+                "parameters": [
+                    {
+                        "description": "CreateNewUser body",
+                        "name": "application.CreateUserRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/application.CreateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns UserDTO",
+                        "schema": {
+                            "$ref": "#/definitions/application.UserDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Returns err.Error",
+                        "schema": {
+                            "$ref": "#/definitions/err.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Returns err.Error",
+                        "schema": {
+                            "$ref": "#/definitions/err.Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "application.CreateUserRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "application.UserDTO": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "err.Error": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "validations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/err.ValidationError"
+                    }
+                }
+            }
+        },
+        "err.ValidationError": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
