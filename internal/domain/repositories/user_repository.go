@@ -6,6 +6,9 @@ import (
 	"github.com/ybalcin/user-management/pkg/err"
 )
 
+// cd internal/domain/repositories
+// mockgen --source=user_repository.go --destination=../../application/test/user_repository_mock.go --package=test
+
 type UserRepository interface {
 	Add(ctx context.Context, user *domain.User) *err.Error
 	GetByEmail(ctx context.Context, email string) (*domain.User, *err.Error)

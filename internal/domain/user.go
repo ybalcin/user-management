@@ -28,14 +28,14 @@ func NewUser(name, email, password string) (*User, *err.Error) {
 		UpdatedAt: time.Now().UTC(),
 	}
 
-	if errs := u.validate(); len(errs) > 0 {
+	if errs := u.Validate(); len(errs) > 0 {
 		return nil, err.ThrowValidationError(errs...)
 	}
 
 	return u, nil
 }
 
-func (u *User) validate() []err.ValidationError {
+func (u *User) Validate() []err.ValidationError {
 	var errs []err.ValidationError
 
 	if helper.StrLength(u.Name) <= 0 {

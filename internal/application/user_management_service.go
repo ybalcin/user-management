@@ -2,7 +2,6 @@ package application
 
 import (
 	"context"
-	"errors"
 	"github.com/ybalcin/user-management/internal/domain"
 	"github.com/ybalcin/user-management/internal/domain/repositories"
 	"github.com/ybalcin/user-management/internal/shared/helper"
@@ -38,7 +37,7 @@ func (s *userManagementService) CreateNewUser(ctx context.Context, request *Crea
 	}
 
 	if existUser != nil {
-		return nil, err.ThrowForbiddenError(errors.New("user with that email already exists"))
+		return nil, err.ThrowForbiddenError(UserExistWithThatEmailError)
 	}
 
 	// hash password
@@ -118,7 +117,7 @@ func (s *userManagementService) GetById(ctx context.Context, id string) (*UserDT
 
 func (s *userManagementService) getById(ctx context.Context, id string) (*domain.User, *err.Error) {
 	if helper.StrLength(id) <= 0 {
-		return nil, err.ThrowBadRequestError(errors.New("id cannot be empty"))
+		return nil, err.ThrowBadRequestError(IdCannotBeEmptyError)
 	}
 
 	user, e := s.repo.GetById(ctx, id)
@@ -127,7 +126,7 @@ func (s *userManagementService) getById(ctx context.Context, id string) (*domain
 	}
 
 	if user == nil {
-		return nil, err.ThrowNotFoundError(errors.New("user with that id does not exist"))
+		return nil, err.ThrowNotFoundError(UserIsNotExistWithThatIdError)
 	}
 
 	return user, nil
